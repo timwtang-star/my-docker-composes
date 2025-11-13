@@ -1,0 +1,106 @@
+version: '2'
+
+# Docker Compose for Pi-Hole and Unbound in Macvlan network mode
+
+#==========================================
+# Service definitions
+services:
+
+  # ---------------------------------------
+  # Pi-Hole service
+  pihole:
+    image: pihole/pihole:latest
+    container_name: pihole
+    hostname: ${HOSTNAME}
+
+    # Port mappings for Pi-Hole
+    ports:
+      # DNS Ports
+      - 53:53/tcp
+      - 53:53/udp
+
+      # When changing the HTTP port from the default,
+      - ${PIHOLE_PORT}:${PIHOLE_PORT}/tcp
+
+      # Uncomment below if you are using Pi-Hole as your DHCP server
+      #- 67/udp
+      
+      # Uncomment below if you are using Pi-Hole as your NTP server
+      #- 123/udp
+
+    environment:
+      # Password for accessing Pi-hole's web interface
+      # NOTES: WEBPASSWORD is deprecated
+      #        Once set with FTLCONF_webserver_api_password, it cannot be change with 'pihole setpassword'
+      #        Any quotes around the password string is part of the password
+      - FTLCONF_webserver_api_password=${WEB_PASSWORD}
+
+      # Local IPv4 for Pi-hole's FTL (Faster Than Light) engine for macvlan network
+      - FTLCONF_LOCAL_IPV4=${PIHOLE_IP}
+      
+      # Set HTTP,HTTPs Ports for host network mode
+      - FTLCONF_webserver_port=${PIHOLE_PORT}
+      
+      # Your User ID and Group ID
+      - PIHOLE_UID=${USER_ID}
+      - PIHOLD_GID=${GROUP_ID}
+
+      # IP address and port number for Unbound DNS resolver
+      - PIHOLE_DNS=${UNBOUND_IP}#${UNBOUND_PORT}
+      
+      # Timezone for the container
+      - TZ=America/Los_Angeles
+
+      # Run dnsmasq as root
+      - DNSMASQ_USER=root
+
+      # Dnsmasq will listen for local requests only
+      - DNSMASQ_LISTENING=local
+
+    # Network configurations for macvlan
+    networks:
+      macvlan:
+        ipv4_address: ${PIHOLE_IP}
+    
+    volumes:
+      - ${CONTAINER_ROOT}/pi-hole-mvl/pihole:/etc/pihole:rw
+      - ${CONTAINER_ROOT}/pi-hole-mvl/dnsmasq.d:/etc/dnsmasq.d:rw
+
+    restart: unless-stopped
+
+  # ---------------------------------------
+  # Unbound service
+  unbound:
+    image: ${UNBOUND_IMAGE}:latest    
+    container_name: unbound
+
+    # Port mapping for Unbound
+    ports:
+      - ${UNBOUND_PORT}:${UNBOUND_PORT}/tcp
+      - ${UNBOUND_PORT}:${UNBOUND_PORT}/udp
+
+    # Network configurations for macvlan
+    networks:
+      macvlan:
+        ipv4_address: ${UNBOUND_IP}
+    
+    volumes:
+      # Make sure you have the following 4 files in the Container before installing Unbound:
+      #  a-records.conf
+      #  srv-records.conf
+      #  forward-records.conf
+      #  unbound.conf
+      - ${CONTAINER_ROOT}/unbound-mvl:/opt/unbound/etc/unbound
+
+    restart: unless-stopped
+
+#==========================================
+# Network definitions
+networks:
+
+  # The macvlan network is defined independently.
+  # The name 'macvlan' must match with what was created
+  macvlan:
+    external: true
+
+    
