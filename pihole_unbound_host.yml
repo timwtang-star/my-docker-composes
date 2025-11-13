@@ -1,0 +1,93 @@
+version: '4'
+
+# Docker Compose for Pi-Hole and Unbound in Host network mode
+
+#==========================================
+services:
+
+  # ---------------------------------------
+  # Pi-Hole service
+  pihole:
+    image: pihole/pihole:latest
+    container_name: pihole
+    hostname: ${HOSTNAME}
+
+    # Port mappings for Pi-Hole
+    ports:
+      # DNS Ports
+      - 53:53/tcp
+      - 53:53/udp
+
+      # When changing the HTTP port from the default,
+      - ${PIHOLE_PORT}:${PIHOLE_PORT}/tcp
+
+      # Uncomment below if you are using Pi-Hole as your DHCP server
+      #- 67/udp
+      
+      # Uncomment below if you are using Pi-Hole as your NTP server
+      #- 123/udp
+
+    environment:
+      # Password for accessing Pi-hole's web interface
+      # NOTES: WEBPASSWORD is deprecated
+      #        Once set with FTLCONF_webserver_api_password, it cannot be change with 'pihole setpassword'
+      #        Any quotes around the password string is part of the password
+      - FTLCONF_webserver_api_password=${WEB_PASSWORD}
+
+      # Set HTTP,HTTPs Ports for host network mode
+      - FTLCONF_webserver_port=${PIHOLE_PORT}
+
+      # Your User ID and Group ID
+      - PIHOLE_UID=${USER_ID}
+      - PIHOLD_GID=${GROUP_ID}
+
+      # IP address (itself) and port number for Unbound DNS resolver
+      - PIHOLE_DNS=127.0.0.1#${UNBOUND_PORT}
+      
+      # Timezone for the container
+      - TZ=America/Los_Angeles
+
+      # Run dnsmasq as root
+      - DNSMASQ_USER=root
+
+      # Dnsmasq will listen for local requests only
+      - DNSMASQ_LISTENING=local
+
+    # Configure for Host network mode
+    network_mode: host
+    
+    volumes:
+      - ${CONTAINER_ROOT}/pi-hole/pihole:/etc/pihole:rw
+      - ${CONTAINER_ROOT}/pi-hole/dnsmasq.d:/etc/dnsmasq.d:rw
+
+    restart: unless-stopped
+
+  # ---------------------------------------
+  # Unbound service
+  unbound:
+    # The unbound image is different for different systems
+    # So use $UNBOUND_IMAGE to define which image to install.
+    image: ${UNBOUND_IMAGE}:latest    
+    container_name: unbound
+
+    # Port mapping for Unbound
+    ports:
+      - ${UNBOUND_PORT}:${UNBOUND_PORT}/tcp
+      - ${UNBOUND_PORT}:${UNBOUND_PORT}/udp
+
+    environment:
+      - UNBOUND_LOG_FILE=${CONTAINER_ROOT}/unbound/unbound.log
+      
+    # Must match Pi-Hole network mode
+    network_mode: host
+    
+    volumes:
+      # Make sure you have the following 4 files in the Container before installing Unbound:
+      #  a-records.conf
+      #  srv-records.conf
+      #  forward-records.conf
+      #  unbound.conf
+      - ${CONTAINER_ROOT}/unbound:/opt/unbound/etc/unbound
+
+    restart: unless-stopped
+    
