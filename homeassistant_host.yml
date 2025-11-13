@@ -1,0 +1,26 @@
+version: '1'
+
+# Docker Compose for Home Assistant in host network mode
+
+#==========================================
+# Service definitions
+services:
+
+  # Home Assistant service on Raspberry Pi's Docker
+  homeassistant:
+    image: "ghcr.io/home-assistant/home-assistant:stable"
+    container_name: homeassistant
+    hostname: ${HOSTNAME}
+    
+    volumes:
+      - ${CONTAINER_PATH}/homeassistant:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
+
+    privileged: true
+
+    network_mode: host
+        
+    restart: unless-stopped
+
+    
