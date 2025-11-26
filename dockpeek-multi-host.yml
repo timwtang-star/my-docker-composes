@@ -1,0 +1,46 @@
+services:
+  dockpeek:
+    image: dockpeek/dockpeek:latest
+    container_name: dockpeek
+    
+    ports:
+      - "3420:8000"
+      
+    environment:
+      - SECRET_KEY=Working410%Off
+      - USERNAME=timtang
+      - PASSWORD=Li0nel@W)rk
+
+      # --- Docker Host 1 (rpi-douglass) ---
+      - DOCKER_HOST_1_URL=unix:///var/run/docker.sock # Local Docker socket
+      #- DOCKER_HOST_1_URL=tcp://10.10.10.40:2375
+      - DOCKER_HOST_1_NAME=rpi-douglass Docker            # is Optional: Auto-detected from Docker API if not set
+      - DOCKER_HOST_1_PUBLIC_HOSTNAME=rpi-douglass.local  # is optional; uses host IP by default
+
+      # --- Docker Host 2 (Remote nas-douglass) ---
+      - DOCKER_HOST_2_URL=tcp://10.10.10.20:2375         # Remote socket proxy
+      - DOCKER_HOST_2_NAME=nas-douglass Server           # Optional: Auto-detected from Docker API if not set
+      - DOCKER_HOST_2_PUBLIC_HOSTNAME=nas-douglass.local # Optional: Custom hostname for links
+
+      # --- Docker Host 3 (Remote rpi-14th) ---
+      - DOCKER_HOST_3_URL=tcp://10.10.20.40:2375
+      - DOCKER_HOST_3_NAME=rpi-14th Docker
+      - DOCKER_HOST_3_PUBLIC_HOSTNAME=rpi-14th.local
+
+      # --- Docker Host 4 (Remote nas-14th) ---
+      - DOCKER_HOST_4_URL=tcp://10.10.20.20:2375
+      - DOCKER_HOST_4_NAME=nas-14th Server
+      - DOCKER_HOST_4_PUBLIC_HOSTNAME=nas-14th.local
+      
+      # --- Docker Host 3 (Tailscale) ---
+      #- DOCKER_HOST_3_URL=tcp://100.64.1.5:2375 # Tailscale IP
+      #- DOCKER_HOST_3_NAME=Remote VPS # Optional: Auto-detected from Docker API if not set
+      #- DOCKER_HOST_3_PUBLIC_HOSTNAME=vps.tailnet.ts.net # Optional: Tailscale FQDN
+
+      # --- Continue pattern for additional hosts (4, 5, etc.) ---
+    volumes:
+      # Required only if you are connecting to a local socket
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+    restart: unless-stopped
+    
