@@ -7,9 +7,9 @@ services:
       - "3420:8000"
       
     environment:
-      - SECRET_KEY=Working410%Off
-      - USERNAME=timtang
-      - PASSWORD=Li0nel@W)rk
+      - SECRET_KEY=${SECRET_KEY}
+      - USERNAME=${USERNAME}
+      - PASSWORD=${PWD}
       - DOCKER_HOST=tcp://socket-proxy:2375 # Connect via socket proxy
       
     depends_on:
