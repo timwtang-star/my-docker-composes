@@ -1,0 +1,7 @@
+services:
+  dozzle:
+    image: amir20/dozzle:latest
+    environment:
+      - DOZZLE_REMOTE_AGENT=agent2:7007,agent3:7007,agent4:7007
+    ports:
+      - 8080:8080 # Dozzle UI port
