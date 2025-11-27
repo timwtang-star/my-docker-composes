@@ -9,7 +9,7 @@ services:
     environment:
       - SECRET_KEY=${SECRET_KEY}
       - USERNAME=${USERNAME}
-      - PASSWORD=${PWD}
+      - PASSWORD=${WEB_PASSWORD}
 
       # --- Docker Host 1 ---
       - DOCKER_HOST_1_URL=unix:///var/run/docker.sock # Local Docker socket
