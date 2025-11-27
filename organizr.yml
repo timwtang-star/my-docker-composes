@@ -1,0 +1,15 @@
+version: "3.6"
+services:
+    organizr:
+        container_name: organizr
+        hostname: organizr
+        image: organizr/organizr:latest
+        restart: unless-stopped
+        ports:
+            - 8082:8082
+        volumes:
+            - ${CONTAINER_ROOT}/organizr:/config
+        environment:
+            - PUID=${USER_ID}
+            - PGID=${GROUP_ID}
+            - TZ=America/Los_Angeles
