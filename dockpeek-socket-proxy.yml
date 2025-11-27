@@ -4,13 +4,13 @@ services:
     container_name: dockpeek
     
     ports:
-      - "3420:8000"
+      - "${DOCKPEEK_PORT}:8000"
       
     environment:
       - SECRET_KEY=${SECRET_KEY}
       - USERNAME=${USERNAME}
       - PASSWORD=${WEB_PASSWORD}
-      - DOCKER_HOST=tcp://socket-proxy:2375 # Connect via socket proxy
+      - DOCKER_HOST=tcp://socket-proxy:${DOCKPEEK_PROXY_PORT}   # Connect via socket proxy
       
     depends_on:
       - socket-proxy
@@ -18,14 +18,14 @@ services:
     restart: unless-stopped
 
   socket-proxy:
-           # alternative: tecnativa/docker-socket-proxy
+    # alternative: tecnativa/docker-socket-proxy
     image: lscr.io/linuxserver/socket-proxy:latest 
     container_name: dockpeek-socket-proxy
 
     # The Dockpeek Github failed to include the port definition.
     # This is required for it to work.
     ports:
-      - "2375:2375"
+      - "${DOCKPEEK_PROXY_PORT}:${DOCKPEEK_PROXY_PORT}"
       
     environment:
       - CONTAINERS=1
