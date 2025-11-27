@@ -9,7 +9,7 @@ services:
     environment:
       - SECRET_KEY=${SECRET_KEY}
       - USERNAME=${USERNAME}
-      - PASSWORD=${PWD}
+      - PASSWORD=${WEB_PASSWORD}
       - DOCKER_HOST=tcp://socket-proxy:2375 # Connect via socket proxy
       
     depends_on:
