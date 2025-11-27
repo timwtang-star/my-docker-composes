@@ -4,7 +4,7 @@ services:
     container_name: dockpeek
     
     ports:
-      - "3420:8000"
+      - "${DOCKPEEK_PORT}:8000"
       
     environment:
       - SECRET_KEY=${SECRET_KEY}
@@ -12,30 +12,29 @@ services:
       - PASSWORD=${WEB_PASSWORD}
 
       # --- Docker Host 1 ---
-      - DOCKER_HOST_1_URL=unix:///var/run/docker.sock # Local Docker socket
-      #- DOCKER_HOST_1_URL=tcp://${HOST_IP_1}:2375
-      - DOCKER_HOST_1_NAME=${HOSTNAME_1} Docker                # is Optional: Auto-detected from Docker API if not set
-      - DOCKER_HOST_1_PUBLIC_HOSTNAME=${HOSTNAME_1}.local      # is optional; uses host IP by default
+      - DOCKER_HOST_1_URL=unix:///var/run/docker.sock                # Local Docker socket
+      - DOCKER_HOST_1_NAME=${HOSTNAME_1} Docker                      # is Optional: Auto-detected from Docker API if not set
+      - DOCKER_HOST_1_PUBLIC_HOSTNAME=${HOSTNAME_1}.local            # is optional; uses host IP by default
 
       # --- Docker Host 2 ---
-      - DOCKER_HOST_2_URL=tcp://${HOST_IP_2}:2375              # Remote socket proxy
-      - DOCKER_HOST_2_NAME=${HOSTNAME_2} Docker                # Optional: Auto-detected from Docker API if not set
-      - DOCKER_HOST_2_PUBLIC_HOSTNAME=${HOSTNAME_2}.local      # Optional: Custom hostname for links
+      - DOCKER_HOST_2_URL=tcp://${HOST_IP_2}:${DOCKPEEK_PROXY_PORT}  # Remote socket proxy
+      - DOCKER_HOST_2_NAME=${HOSTNAME_2} Docker                      # Optional: Auto-detected from Docker API if not set
+      - DOCKER_HOST_2_PUBLIC_HOSTNAME=${HOSTNAME_2}.local            # Optional: Custom hostname for links
 
       # --- Docker Host 3 ---
-      - DOCKER_HOST_3_URL=tcp://${HOST_IP_3}:2375
+      - DOCKER_HOST_3_URL=tcp://${HOST_IP_3}:${DOCKPEEK_PROXY_PORT} 
       - DOCKER_HOST_3_NAME=${HOSTNAME_3} Docker
       - DOCKER_HOST_3_PUBLIC_HOSTNAME=${HOSTNAME_3}.local
 
       # --- Docker Host 4 ---
-      - DOCKER_HOST_4_URL=tcp://${HOST_IP_4}:2375
+      - DOCKER_HOST_4_URL=tcp://${HOST_IP_4}:${DOCKPEEK_PROXY_PORT} 
       - DOCKER_HOST_4_NAME=${HOSTNAME_4} Docker
       - DOCKER_HOST_4_PUBLIC_HOSTNAME=${HOSTNAME_4}.local
       
-      # --- Docker Host 3 (Tailscale) ---
-      #- DOCKER_HOST_3_URL=tcp://100.64.1.5:2375 # Tailscale IP
-      #- DOCKER_HOST_3_NAME=Remote VPS # Optional: Auto-detected from Docker API if not set
-      #- DOCKER_HOST_3_PUBLIC_HOSTNAME=vps.tailnet.ts.net # Optional: Tailscale FQDN
+      # --- Docker Host 5 (Tailscale) ---
+      #- DOCKER_HOST_5_URL=tcp://${TAILSCLE_IP}:${DOCKPEEK_PROXY_PORT}  # Tailscale IP
+      #- DOCKER_HOST_5_NAME=Remote VPS                          # Optional: Auto-detected from Docker API if not set
+      #- DOCKER_HOST_5_PUBLIC_HOSTNAME=vps.tailnet.ts.net       # Optional: Tailscale FQDN
 
       # --- Continue pattern for additional hosts (4, 5, etc.) ---
     volumes:
