@@ -9,7 +9,7 @@ services:
     
     # Pass in your config file below, by specifying the path on your host machine
     volumes:
-      - ${CONTAINER_PATH}/dashy/conf.yml:/app/user-data/conf.yml
+      - ${CONTAINER_ROOT}/dashy/conf.yml:/app/user-data/conf.yml
     ports:
       # <Host Port>:<Container Port>
       - ${DASHY_PORT}:8080
