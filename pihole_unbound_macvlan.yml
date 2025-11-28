@@ -76,8 +76,8 @@ services:
 
     # Port mapping for Unbound
     ports:
-      - ${UNBOUND_PORT}:${UNBOUND_PORT}/tcp
-      - ${UNBOUND_PORT}:${UNBOUND_PORT}/udp
+      - ${UNBOUND_PORT}:53/tcp
+      - ${UNBOUND_PORT}:53/udp
 
     # Network configurations for macvlan
     networks:
