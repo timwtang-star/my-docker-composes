@@ -13,4 +13,5 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     ports:
-      - 7007:7007
+      # <Host Port>:<Container Port>
+      - ${DOZZLE_AGENT_PORT}:7007
