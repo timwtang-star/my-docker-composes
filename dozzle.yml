@@ -18,7 +18,7 @@ services:
       # - DOZZLE_AUTH_PROVIDER=simple
       #
       # Hostname
-      - DOZZLE_HOSTNAME=my-special-name
+      - DOZZLE_HOSTNAME=${HOSTNAME}
       #
       # Remote hosts
       - DOZZLE_REMOTE_AGENT=${HOST_IP_2}:${DOZZLE_AGENT_PORT},${HOST_IP_3}:${DOZZLE_AGENT_PORT},${HOST_IP_4}:${DOZZLE_AGENT_PORT}
