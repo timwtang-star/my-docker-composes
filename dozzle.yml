@@ -11,7 +11,13 @@ services:
       - DOZZLE_ENABLE_ACTIONS=true
       #
       # Uncomment to allow access to container shells. See https://dozzle.dev/guide/shell
-      # - DOZZLE_ENABLE_SHELL=true
+      - DOZZLE_ENABLE_SHELL=true
       #
       # Uncomment to enable authentication. See https://dozzle.dev/guide/authentication
       # - DOZZLE_AUTH_PROVIDER=simple
+      #
+      # Hostname
+      - DOZZLE_HOSTNAME=my-special-name
+      #
+      # Remote hosts
+      - DOZZLE_REMOTE_AGENT=${HOST_IP_2}:${DOZZLE_AGENT_PORT},${HOST_IP_3}:${DOZZLE_AGENT_PORT},${HOST_IP_4}:${DOZZLE_AGENT_PORT}
