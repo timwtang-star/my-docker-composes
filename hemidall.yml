@@ -1,0 +1,15 @@
+services:
+  heimdall:
+    image: lscr.io/linuxserver/heimdall:latest
+    container_name: heimdall
+    environment:
+      - PUID=${USER_ID}
+      - PGID=${GROUP_ID}
+      - TZ=America/Los_Angeles
+      - ALLOW_INTERNAL_REQUESTS=false   #optional
+    volumes:
+      - ${CONTAINER_ROOT}/hemidall:/config
+    ports:
+      - ${HEMIDALL_PORT}:80
+      - ${HEMIDALL_HTTPS}:443
+    restart: unless-stopped
