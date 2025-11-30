@@ -24,11 +24,10 @@ services:
     env_file:
       - stack.env
     ports:
-      - '${IMMICH_PORT}:${IMMICH_PORT}'
+      - '${IMMICH_PORT}:2283'
     depends_on:
       - redis
       - database
-      - immich-machine-learning
     restart: always
     healthcheck:
       disable: false
