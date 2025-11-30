@@ -28,6 +28,7 @@ services:
     depends_on:
       - redis
       - database
+      - immich-machine-learning
     restart: always
     healthcheck:
       disable: false
