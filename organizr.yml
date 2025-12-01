@@ -13,3 +13,4 @@ services:
             - PUID=${USER_ID}
             - PGID=${GROUP_ID}
             - TZ=America/Los_Angeles
+            - branch="v2-master"
