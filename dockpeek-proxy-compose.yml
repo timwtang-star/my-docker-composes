@@ -4,7 +4,7 @@ services:
     container_name: dockpeek
     
     ports:
-      - "${DOCKPEEK_PORT}:8000"
+      - "${DOCKPEEK_HTTP_PORT}:8000"
       
     environment:
       - SECRET_KEY=${SECRET_KEY}
