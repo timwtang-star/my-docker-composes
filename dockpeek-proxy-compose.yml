@@ -8,7 +8,7 @@ services:
       
     environment:
       - SECRET_KEY=${SECRET_KEY}
-      - USERNAME=${USERNAME}
+      - USERNAME=${HTTP_LOGIN_NAME}
       - PASSWORD=${HTTP_PASSWORD}
       - DOCKER_HOST=tcp://socket-proxy:${DOCKPEEK_PROXY_PORT}   # Connect via socket proxy
       
