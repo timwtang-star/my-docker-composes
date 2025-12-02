@@ -12,7 +12,7 @@ services:
       - ${CONTAINER_ROOT}/dashy/conf.yml:/app/user-data/conf.yml
     ports:
       # <Host Port>:<Container Port>
-      - ${DASHY_PORT}:8080
+      - ${DASHY_HTTP_PORT}:8080
       
     # Set any environmental variables
     environment:
