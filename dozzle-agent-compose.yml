@@ -3,7 +3,7 @@ services:
     image: amir20/dozzle:latest
     command: agent
     environment:
-      - DOZZLE_HOSTNAME=${HOSTNNAME}
+      - DOZZLE_HOSTNAME=${HOSTNAME}
 # Synology'd Docker does not support 'healthcheck'
 #    healthcheck:
 #      test: ["CMD", "/dozzle", "healthcheck"]
