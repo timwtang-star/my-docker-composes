@@ -5,8 +5,8 @@ services:
     ports:
       - "7655:7655"
     volumes:
-      - pulse_data:/data
-    environment:
+      - ${CONTAINER_ROOT}/pulse:/data
+    # environment:
       # NOTE: Env vars override UI settings. Remove env var to allow UI configuration.
 
       # Network discovery (usually not needed - auto-scans common networks)
