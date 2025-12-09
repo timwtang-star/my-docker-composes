@@ -76,7 +76,8 @@ services:
       - ${UNBOUND_PORT}:53/udp
 
     environment:
-      - UNBOUND_LOG_FILE=${CONTAINER_ROOT}/unbound/unbound.log
+      #- UNBOUND_LOG_FILE=${CONTAINER_ROOT}/unbound/unbound.log
+      - UNBOUND_LOG_FILE=/opt/unbound/etc/unbound/unbound.log
       
     # Must match Pi-Hole network mode
     network_mode: host
