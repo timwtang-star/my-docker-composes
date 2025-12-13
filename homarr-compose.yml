@@ -13,15 +13,8 @@ services:
       # can be generated with `openssl rand -hex 32`
       # - SECRET_ENCRYPTION_KEY=7f351386bafddefa9e40ce3dd902681cce04afaa6d3f18941dd82a2abee532bc
       - SECRET_ENCRYPTION_KEY=c683efdd3544df84d47512958d6f39c71fa3efed8abb363ba4931d805caa4459
-      - DOCKER_HOSTNAMES=localhost,10.10.20.20
-      - DOCKER_PORT=2375,2376
+      # - DOCKER_HOSTNAMES=localhost
+      # - DOCKER_PORT=2375
     ports:
       - '7575:7575'
 
-    networks:
-      - socket-proxy
-
-networks:
-  socket-proxy:
-    name: socket-proxy # <--- change this to the name of the network as set up by the socket proxy
-    external: true
