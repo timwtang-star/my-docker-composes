@@ -17,3 +17,11 @@ services:
       - DOCKER_PORT=2375,2376
     ports:
       - '7575:7575'
+
+    networks:
+      - socket-proxy
+
+networks:
+  socket-proxy:
+    name: socket-proxy # <--- change this to the name of the network as set up by the socket proxy
+    external: true
