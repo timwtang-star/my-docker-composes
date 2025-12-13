@@ -10,6 +10,10 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock # Optional, only if you want docker integration
       - ${CONTAINER_ROOT}/homarr/appdata:/appdata
     environment:
-      - SECRET_ENCRYPTION_KEY=7f351386bafddefa9e40ce3dd902681cce04afaa6d3f18941dd82a2abee532bc
+      # can be generated with `openssl rand -hex 32`
+      # - SECRET_ENCRYPTION_KEY=7f351386bafddefa9e40ce3dd902681cce04afaa6d3f18941dd82a2abee532bc
+      - SECRET_ENCRYPTION_KEY=c683efdd3544df84d47512958d6f39c71fa3efed8abb363ba4931d805caa4459
+      - DOCKER_HOSTNAMES=localhost,10.10.20.20
+      - DOCKER_PORT=2375,2376
     ports:
       - '7575:7575'
